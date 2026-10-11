@@ -1,0 +1,2272 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ElitePOS for Hospitality | $0 Monthly POS Fees · Same-Day Settlements</title>
+  <meta name="description" content="All-in-one hospitality POS and integrated EFTPOS for Australian cafes, restaurants, takeaways, bars and food trucks. $0 monthly software fees and same-day payouts.">
+  <link rel="icon" type="image/png" href="assets/logo.png">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* ─── ROOT DESIGN TOKENS (BASED ON ELITEPOS BRAND LOGO) ─── */
+    :root {
+      /* Brand Logo Primary Colors */
+      --cyan-bright: #00C2FF;
+      --cyan-primary: #00A3FF;
+      --cyan-deep: #0084D6;
+      --blue-electric: #0066FF;
+      --blue-royal: #1557E5;
+      --blue-dark: #0A3EBE;
+      
+      /* Logo Midnight Navy */
+      --navy-brand: #161144;
+      --navy-deep: #0F0B30;
+      --navy-card: #1C1656;
+      --navy-surface: #241D68;
+
+      /* UI Accents & Gradients */
+      --gradient-brand: linear-gradient(135deg, #00C2FF 0%, #0066FF 60%, #1557E5 100%);
+      --gradient-brand-subtle: linear-gradient(135deg, rgba(0, 194, 255, 0.12) 0%, rgba(0, 102, 255, 0.06) 100%);
+      --gradient-dark: linear-gradient(145deg, #161144 0%, #0F0B30 100%);
+      --gradient-glow: radial-gradient(circle at 50% 0%, rgba(0, 194, 255, 0.22), transparent 70%);
+
+      /* Neutrals & Surfaces */
+      --bg-canvas: #F8FAFC;
+      --bg-white: #FFFFFF;
+      --bg-subtle: #F1F5F9;
+      --border-subtle: #E2E8F0;
+      --border-focus: rgba(0, 163, 255, 0.4);
+
+      /* Typography Colors */
+      --text-heading: #0F172A;
+      --text-brand-navy: #161144;
+      --text-body: #334155;
+      --text-muted: #64748B;
+      --text-light: #94A3B8;
+
+      /* Utility Shadows */
+      --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06);
+      --shadow-md: 0 4px 14px rgba(15, 23, 42, 0.08);
+      --shadow-lg: 0 12px 32px -4px rgba(22, 17, 68, 0.12);
+      --shadow-glow: 0 8px 30px rgba(0, 163, 255, 0.28);
+      --shadow-glow-strong: 0 12px 40px rgba(0, 102, 255, 0.38);
+
+      /* Layout */
+      --max-width: 1240px;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-xl: 28px;
+      --radius-pill: 9999px;
+    }
+
+    /* ─── RESET & BASE ─── */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-canvas);
+      color: var(--text-body);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    h1, h2, h3, h4, .font-heading {
+      font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+      color: var(--text-heading);
+      line-height: 1.15;
+      letter-spacing: -0.025em;
+    }
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+    button, input, select, textarea {
+      font: inherit;
+    }
+
+    /* ─── UTILITY CLASSES ─── */
+    .container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: var(--radius-pill);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+    .badge-cyan {
+      background: rgba(0, 194, 255, 0.12);
+      color: #0077C8;
+      border: 1px solid rgba(0, 194, 255, 0.3);
+    }
+    .badge-dark {
+      background: var(--navy-brand);
+      color: #FFFFFF;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    .text-gradient {
+      background: var(--gradient-brand);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 15px;
+      padding: 13px 26px;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      border: none;
+      text-align: center;
+      white-space: nowrap;
+    }
+    .btn-primary {
+      background: var(--gradient-brand);
+      color: #FFFFFF;
+      box-shadow: 0 6px 20px -2px rgba(0, 102, 255, 0.35);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-glow-strong);
+      color: #FFFFFF;
+    }
+    .btn-secondary {
+      background: #FFFFFF;
+      color: var(--navy-brand);
+      border: 1.5px solid var(--border-subtle);
+      box-shadow: var(--shadow-sm);
+    }
+    .btn-secondary:hover {
+      border-color: var(--cyan-primary);
+      color: var(--blue-electric);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+    .btn-navy {
+      background: var(--navy-brand);
+      color: #FFFFFF;
+    }
+    .btn-navy:hover {
+      background: var(--navy-deep);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+    .btn-white {
+      background: #FFFFFF;
+      color: var(--navy-brand);
+    }
+    .btn-white:hover {
+      background: #F8FAFC;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(255, 255, 255, 0.3);
+    }
+
+    /* ─── TOP ANNOUNCEMENT BAR ─── */
+    .top-ribbon {
+      background: var(--navy-brand);
+      color: #E2E8F0;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 9px 16px;
+      border-bottom: 1px solid rgba(0, 194, 255, 0.15);
+      position: relative;
+      z-index: 50;
+    }
+    .top-ribbon .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .top-ribbon a {
+      color: var(--cyan-bright);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .top-ribbon a:hover {
+      color: #FFFFFF;
+    }
+    .top-ribbon-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    /* ─── STICKY HEADER / NAVBAR ─── */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(226, 232, 240, 0.85);
+      transition: all 0.25s ease;
+    }
+    .navbar-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 76px;
+      gap: 24px;
+    }
+    .brand-logo-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+    .brand-logo-img {
+      height: 40px;
+      width: auto;
+      object-fit: contain;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      list-style: none;
+    }
+    .nav-link {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-body);
+      position: relative;
+      padding: 6px 0;
+    }
+    .nav-link:hover {
+      color: var(--blue-electric);
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--gradient-brand);
+      transition: width 0.2s ease;
+      border-radius: 2px;
+    }
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .phone-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--navy-brand);
+      padding: 8px 14px;
+      border-radius: var(--radius-pill);
+      background: var(--bg-subtle);
+      transition: all 0.2s ease;
+    }
+    .phone-link:hover {
+      background: rgba(0, 163, 255, 0.1);
+      color: var(--blue-electric);
+    }
+    .phone-link svg {
+      width: 16px;
+      height: 16px;
+      stroke: var(--cyan-primary);
+    }
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--navy-brand);
+      padding: 8px;
+    }
+
+    /* ─── HERO SECTION ─── */
+    .hero-section {
+      position: relative;
+      padding: 68px 0 88px;
+      background: radial-gradient(circle at 85% 15%, rgba(0, 194, 255, 0.08) 0%, transparent 60%),
+                  radial-gradient(circle at 10% 80%, rgba(0, 102, 255, 0.05) 0%, transparent 50%),
+                  var(--bg-canvas);
+      overflow: hidden;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+    .hero-content {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+    .hero-badge-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .hero-title {
+      font-size: clamp(38px, 4.4vw, 58px);
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      line-height: 1.08;
+      color: var(--navy-brand);
+    }
+    .hero-desc {
+      font-size: 19px;
+      color: var(--text-body);
+      line-height: 1.6;
+      max-width: 580px;
+    }
+    .venue-tags-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+    .venue-tag-btn {
+      padding: 7px 15px;
+      border-radius: var(--radius-pill);
+      font-size: 13.5px;
+      font-weight: 600;
+      background: #FFFFFF;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-body);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .venue-tag-btn:hover, .venue-tag-btn.active {
+      background: var(--navy-brand);
+      color: #FFFFFF;
+      border-color: var(--navy-brand);
+      box-shadow: 0 4px 12px rgba(22, 17, 68, 0.15);
+    }
+    .hero-features-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      padding: 8px 0;
+    }
+    .hero-feat-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: var(--text-heading);
+    }
+    .hero-feat-item svg {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      color: var(--cyan-primary);
+    }
+    .hero-cta-group {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      padding-top: 6px;
+    }
+    .hero-social-proof {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding-top: 8px;
+      font-size: 13.5px;
+      color: var(--text-muted);
+    }
+    .stars-group {
+      display: flex;
+      gap: 3px;
+      color: #F59E0B;
+    }
+
+    /* ─── HERO VISUAL SHOWCASE ─── */
+    .hero-visual-card {
+      position: relative;
+    }
+    .hero-img-frame {
+      position: relative;
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      box-shadow: 0 24px 60px -12px rgba(22, 17, 68, 0.2), 0 0 0 1px rgba(0, 163, 255, 0.18);
+      background: #FFFFFF;
+    }
+    .hero-img-frame img {
+      width: 100%;
+      height: 480px;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      transition: transform 0.6s ease;
+    }
+    .hero-img-frame:hover img {
+      transform: scale(1.02);
+    }
+    /* Floating Glass Badge 1 */
+    .float-badge-1 {
+      position: absolute;
+      top: 24px;
+      left: -20px;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(12px);
+      padding: 14px 20px;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      border: 1px solid rgba(0, 194, 255, 0.25);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      animation: floatSlow 4s ease-in-out infinite;
+      z-index: 2;
+    }
+    .float-icon-box {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: var(--gradient-brand);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #FFFFFF;
+      flex-shrink: 0;
+    }
+    /* Floating Glass Badge 2 */
+    .float-badge-2 {
+      position: absolute;
+      bottom: 24px;
+      right: -20px;
+      background: var(--navy-brand);
+      color: #FFFFFF;
+      padding: 14px 20px;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      border: 1px solid rgba(0, 194, 255, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      animation: floatSlow 4s ease-in-out infinite 2s;
+      z-index: 2;
+    }
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    /* ─── LIVE TICKER / METRICS STRIP ─── */
+    .metrics-strip {
+      background: #FFFFFF;
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 38px 0;
+    }
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 32px;
+      text-align: center;
+    }
+    .metric-item {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      position: relative;
+    }
+    .metric-item:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      right: -16px;
+      top: 15%;
+      height: 70%;
+      width: 1px;
+      background: var(--border-subtle);
+    }
+    .metric-number {
+      font-size: 40px;
+      font-weight: 800;
+      color: var(--navy-brand);
+      letter-spacing: -0.03em;
+    }
+    .metric-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* ─── VENUE TABBED EXPERIENCE ─── */
+    .section-wrap {
+      padding: 96px 0;
+    }
+    .section-header {
+      text-align: center;
+      max-width: 760px;
+      margin: 0 auto 52px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .section-tag {
+      font-size: 13.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--blue-electric);
+    }
+    .section-title {
+      font-size: clamp(32px, 3.8vw, 48px);
+      font-weight: 800;
+      color: var(--navy-brand);
+    }
+    .section-desc {
+      font-size: 18px;
+      color: var(--text-body);
+    }
+
+    .venue-tabs-nav {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 36px;
+    }
+    .venue-tab-button {
+      padding: 13px 24px;
+      border-radius: var(--radius-pill);
+      background: #FFFFFF;
+      border: 1.5px solid var(--border-subtle);
+      color: var(--text-heading);
+      font-weight: 700;
+      font-size: 15px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .venue-tab-button:hover {
+      border-color: var(--cyan-primary);
+      color: var(--blue-electric);
+    }
+    .venue-tab-button.active {
+      background: var(--navy-brand);
+      color: #FFFFFF;
+      border-color: var(--navy-brand);
+      box-shadow: 0 8px 24px rgba(22, 17, 68, 0.18);
+    }
+
+    .venue-tab-content-card {
+      background: #FFFFFF;
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-lg);
+      padding: 48px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .venue-tab-content-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--gradient-brand);
+    }
+    .tab-info-col {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .tab-headline {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--navy-brand);
+      line-height: 1.2;
+    }
+    .tab-body-text {
+      font-size: 17px;
+      color: var(--text-body);
+      line-height: 1.6;
+    }
+    .tab-points-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin: 8px 0;
+    }
+    .tab-point-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: var(--bg-canvas);
+      padding: 12px 16px;
+      border-radius: var(--radius-md);
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-heading);
+    }
+    .tab-point-item svg {
+      width: 20px;
+      height: 20px;
+      color: var(--cyan-primary);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .tab-img-col {
+      position: relative;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+    }
+    .tab-img-col img {
+      width: 100%;
+      height: 380px;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* ─── PLATFORM FEATURES GRID ─── */
+    .platform-section {
+      background: #FFFFFF;
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .feature-card {
+      background: var(--bg-canvas);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 36px 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+    }
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lg);
+      border-color: rgba(0, 163, 255, 0.35);
+      background: #FFFFFF;
+    }
+    .feature-icon-wrapper {
+      width: 56px;
+      height: 56px;
+      border-radius: var(--radius-md);
+      background: var(--gradient-brand-subtle);
+      border: 1px solid rgba(0, 194, 255, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--blue-electric);
+      transition: all 0.25s ease;
+    }
+    .feature-card:hover .feature-icon-wrapper {
+      background: var(--gradient-brand);
+      color: #FFFFFF;
+      box-shadow: var(--shadow-glow);
+    }
+    .feature-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--navy-brand);
+    }
+    .feature-text {
+      font-size: 15.5px;
+      color: var(--text-body);
+      line-height: 1.55;
+    }
+
+    /* ─── INTERACTIVE SAVINGS CALCULATOR ─── */
+    .calculator-section {
+      background: var(--navy-brand);
+      color: #FFFFFF;
+      position: relative;
+      overflow: hidden;
+    }
+    .calculator-section::after {
+      content: '';
+      position: absolute;
+      top: -20%;
+      right: -10%;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0, 194, 255, 0.15), transparent 70%);
+      pointer-events: none;
+    }
+    .calc-card-container {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(0, 194, 255, 0.2);
+      border-radius: var(--radius-xl);
+      padding: 48px;
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+    .calc-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+    .calc-slider-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .slider-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+    .slider-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #E2E8F0;
+    }
+    .slider-display-val {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--cyan-bright);
+      font-family: 'Outfit', sans-serif;
+    }
+    input[type=range] {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 8px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.2);
+      outline: none;
+      cursor: pointer;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--cyan-bright);
+      box-shadow: 0 0 16px rgba(0, 194, 255, 0.8);
+      cursor: pointer;
+      border: 3px solid #FFFFFF;
+      transition: transform 0.15s ease;
+    }
+    input[type=range]::-webkit-slider-thumb:hover {
+      transform: scale(1.15);
+    }
+    .calc-result-box {
+      background: linear-gradient(145deg, rgba(28, 22, 86, 0.8) 0%, rgba(15, 11, 48, 0.95) 100%);
+      border: 1.5px solid rgba(0, 194, 255, 0.35);
+      border-radius: var(--radius-lg);
+      padding: 36px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3);
+    }
+    .savings-amount {
+      font-size: 54px;
+      font-weight: 800;
+      color: var(--cyan-bright);
+      line-height: 1;
+      font-family: 'Outfit', sans-serif;
+      text-shadow: 0 0 24px rgba(0, 194, 255, 0.4);
+    }
+    .savings-subtext {
+      font-size: 15px;
+      color: #CBD5E1;
+      max-width: 320px;
+    }
+    .calc-breakdown {
+      width: 100%;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      padding-top: 16px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 13.5px;
+      color: #94A3B8;
+    }
+
+    /* ─── COMPARISON MATRIX ─── */
+    .compare-table-wrap {
+      background: #FFFFFF;
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border-subtle);
+      overflow-x: auto;
+      box-shadow: var(--shadow-md);
+    }
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+    .compare-table th, .compare-table td {
+      padding: 20px 24px;
+      font-size: 15.5px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .compare-table th {
+      background: var(--bg-canvas);
+      font-weight: 700;
+      color: var(--navy-brand);
+      font-size: 16px;
+    }
+    .compare-table th.col-highlight, .compare-table td.col-highlight {
+      background: rgba(0, 194, 255, 0.05);
+      border-left: 2px solid var(--cyan-primary);
+      border-right: 2px solid var(--cyan-primary);
+    }
+    .compare-table th.col-highlight {
+      background: var(--gradient-brand);
+      color: #FFFFFF;
+      border-top: none;
+    }
+    .badge-check {
+      color: #059669;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .badge-cross {
+      color: #DC2626;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* ─── 3 STEPS HOW IT WORKS ─── */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+    .step-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 36px 30px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.25s ease;
+    }
+    .step-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+    }
+    .step-num {
+      font-size: 48px;
+      font-weight: 800;
+      font-family: 'Outfit', sans-serif;
+      line-height: 1;
+      background: var(--gradient-brand);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .step-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--navy-brand);
+    }
+    .step-desc {
+      font-size: 15.5px;
+      color: var(--text-body);
+      line-height: 1.6;
+    }
+
+    /* ─── REAL TESTIMONIALS ─── */
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+    .testimonial-card {
+      background: #FFFFFF;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-subtle);
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 20px;
+      box-shadow: var(--shadow-sm);
+    }
+    .testimonial-quote {
+      font-size: 16px;
+      color: var(--text-body);
+      line-height: 1.65;
+      font-style: italic;
+    }
+    .venue-author-box {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 18px;
+    }
+    .venue-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--gradient-brand);
+      color: #FFFFFF;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .venue-info h4 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--navy-brand);
+    }
+    .venue-info p {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* ─── FAQ ACCORDION ─── */
+    .faq-container {
+      max-width: 820px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .faq-item {
+      background: #FFFFFF;
+      border: 1.5px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      transition: all 0.2s ease;
+    }
+    .faq-item:hover {
+      border-color: rgba(0, 163, 255, 0.4);
+    }
+    .faq-question {
+      padding: 22px 26px;
+      font-size: 17.5px;
+      font-weight: 700;
+      color: var(--navy-brand);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      user-select: none;
+    }
+    .faq-question svg {
+      width: 20px;
+      height: 20px;
+      transition: transform 0.25s ease;
+      color: var(--cyan-primary);
+    }
+    .faq-item.open .faq-question svg {
+      transform: rotate(180deg);
+    }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+      font-size: 15.5px;
+      color: var(--text-body);
+      line-height: 1.65;
+      padding: 0 26px;
+    }
+    .faq-item.open .faq-answer {
+      max-height: 300px;
+      padding: 0 26px 22px;
+    }
+
+    /* ─── QUOTE FORM SECTION ─── */
+    .quote-section {
+      background: radial-gradient(circle at 10% 20%, rgba(0, 194, 255, 0.08) 0%, transparent 60%),
+                  #FFFFFF;
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .quote-box-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      gap: 56px;
+      align-items: center;
+    }
+    .form-card {
+      background: var(--navy-brand);
+      color: #FFFFFF;
+      border-radius: var(--radius-xl);
+      padding: 44px;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid rgba(0, 194, 255, 0.2);
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .form-group-full {
+      grid-column: 1 / -1;
+    }
+    .form-label {
+      display: block;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #E2E8F0;
+      margin-bottom: 6px;
+    }
+    .form-input, .form-select {
+      width: 100%;
+      height: 48px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: var(--radius-sm);
+      color: #FFFFFF;
+      padding: 0 16px;
+      font-size: 15px;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+    .form-select option {
+      background: var(--navy-brand);
+      color: #FFFFFF;
+    }
+    .form-input:focus, .form-select:focus {
+      border-color: var(--cyan-bright);
+      background: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 0 12px rgba(0, 194, 255, 0.3);
+    }
+
+    /* ─── FINAL CTA BANNER ─── */
+    .final-cta {
+      background: var(--gradient-dark);
+      color: #FFFFFF;
+      position: relative;
+      overflow: hidden;
+      padding: 88px 0;
+    }
+    .final-cta::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at 75% 30%, rgba(0, 194, 255, 0.2), transparent 60%);
+      pointer-events: none;
+    }
+    .final-cta-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 36px;
+      flex-wrap: wrap;
+    }
+
+    /* ─── FOOTER ─── */
+    .site-footer {
+      background: #0B0826;
+      color: #94A3B8;
+      font-size: 14.5px;
+      padding: 64px 0 32px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 48px;
+    }
+    .footer-col h5 {
+      color: #FFFFFF;
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .footer-links a:hover {
+      color: var(--cyan-bright);
+    }
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      font-size: 13.5px;
+    }
+
+    /* ─── NOTIFICATION TOAST POPUP (LIVE TRADING SIMULATION) ─── */
+    .live-toast {
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(0, 194, 255, 0.3);
+      border-radius: var(--radius-md);
+      box-shadow: 0 16px 36px rgba(22, 17, 68, 0.16);
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      z-index: 100;
+      transform: translateY(120px);
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .live-toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    .toast-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #10B981;
+      box-shadow: 0 0 8px #10B981;
+    }
+
+    /* ─── SUCCESS MODAL ─── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 11, 48, 0.7);
+      backdrop-filter: blur(8px);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.25s ease;
+      padding: 20px;
+    }
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    .modal-card {
+      background: #FFFFFF;
+      border-radius: var(--radius-xl);
+      padding: 44px;
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+      box-shadow: var(--shadow-lg);
+      transform: scale(0.9);
+      transition: transform 0.25s ease;
+    }
+    .modal-overlay.active .modal-card {
+      transform: scale(1);
+    }
+
+    /* ─── RESPONSIVE BREAKPOINTS ─── */
+    @media (max-width: 1024px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+      .float-badge-1 { left: 10px; }
+      .float-badge-2 { right: 10px; }
+      .venue-tab-content-card {
+        grid-template-columns: 1fr;
+      }
+      .calc-card-container {
+        grid-template-columns: 1fr;
+      }
+      .quote-box-grid {
+        grid-template-columns: 1fr;
+      }
+      .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .steps-grid, .testimonials-grid {
+        grid-template-columns: 1fr;
+      }
+      .footer-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (max-width: 768px) {
+      .nav-links, .nav-actions .phone-link {
+        display: none;
+      }
+      .mobile-menu-btn {
+        display: block;
+      }
+      .metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+      }
+      .metric-item:not(:last-child)::after {
+        display: none;
+      }
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─── TOP ANNOUNCEMENT RIBBON ─── -->
+  <aside class="top-ribbon">
+    <div class="container">
+      <div>
+        <span>🇦🇺 <strong>Australia’s Leading Hospitality POS</strong> — Zero Monthly Software Fees & Same-Day Settlement.</span>
+      </div>
+      <div class="top-ribbon-right">
+        <span>Questions? Call our local team: <a href="tel:1300354837"><strong>1300 ELITEPOS</strong> (1300 354 837)</a></span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ─── STICKY NAVIGATION BAR ─── -->
+  <header class="navbar" id="navbar">
+    <div class="container navbar-container">
+      <a href="#hero" class="brand-logo-link" aria-label="ElitePOS Homepage">
+        <img src="assets/logo.png" alt="ElitePOS Logo" class="brand-logo-img">
+      </a>
+
+      <nav aria-label="Main Navigation">
+        <ul class="nav-links">
+          <li><a href="#venues" class="nav-link">Venues</a></li>
+          <li><a href="#platform" class="nav-link">Platform & Hardware</a></li>
+          <li><a href="#calculator" class="nav-link">Savings Calculator</a></li>
+          <li><a href="#compare" class="nav-link">Why ElitePOS</a></li>
+          <li><a href="#faq" class="nav-link">FAQ</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="tel:1300354837" class="phone-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+          </svg>
+          <span>1300 354 837</span>
+        </a>
+        <a href="#quote" class="btn btn-primary">Get a Free Quote</a>
+        <button class="mobile-menu-btn" aria-label="Open Mobile Menu" onclick="toggleMobileNav()">
+          <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"></path></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ─── HERO SECTION ─── -->
+  <section class="hero-section" id="hero">
+    <div class="container hero-grid">
+      
+      <!-- Left Content -->
+      <div class="hero-content">
+        <div class="hero-badge-wrap">
+          <span class="badge-pill badge-cyan">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+            Next-Gen Hospitality POS
+          </span>
+          <span class="badge-pill badge-dark">$0 Monthly Software Fees</span>
+        </div>
+
+        <h1 class="hero-title">
+          Built for the <span class="text-gradient">lunch rush</span>, dinner service & last drinks.
+        </h1>
+
+        <p class="hero-desc">
+          The all-in-one POS and integrated EFTPOS platform engineered for Australian hospitality. Eliminate monthly software subscriptions, enjoy low payment rates, and get your takings deposited the <strong>very same day</strong>.
+        </p>
+
+        <!-- Interactive Venue Quick Tags -->
+        <div class="venue-tags-row">
+          <span style="font-size: 13.5px; font-weight: 700; color: var(--navy-brand); margin-right: 4px;">Tailored for:</span>
+          <button class="venue-tag-btn active" onclick="switchVenue('cafe')">☕ Cafes</button>
+          <button class="venue-tag-btn" onclick="switchVenue('takeaway')">🥡 Takeaway</button>
+          <button class="venue-tag-btn" onclick="switchVenue('truck')">🚚 Food Trucks</button>
+          <button class="venue-tag-btn" onclick="switchVenue('restaurant')">🍽️ Restaurants</button>
+          <button class="venue-tag-btn" onclick="switchVenue('pub')">🍺 Pubs & Bars</button>
+        </div>
+
+        <!-- Checkmark List -->
+        <div class="hero-features-list">
+          <div class="hero-feat-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"></path></svg>
+            <span>$0 Monthly POS Subscriptions</span>
+          </div>
+          <div class="hero-feat-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"></path></svg>
+            <span>Same-Day 6 PM Bank Settlements</span>
+          </div>
+          <div class="hero-feat-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"></path></svg>
+            <span>Seamless EFTPOS Integration</span>
+          </div>
+          <div class="hero-feat-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"></path></svg>
+            <span>Australian Local 7-Day Support</span>
+          </div>
+        </div>
+
+        <!-- Call to actions -->
+        <div class="hero-cta-group">
+          <a href="#quote" class="btn btn-primary" style="font-size: 16px; padding: 15px 32px;">Get Instant Venue Quote</a>
+          <a href="#calculator" class="btn btn-secondary">Calculate Your Savings</a>
+        </div>
+
+        <!-- Social Proof -->
+        <div class="hero-social-proof">
+          <div class="stars-group">
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          </div>
+          <span><strong>4.9 / 5 Rating</strong> from 3,200+ Australian Hospitality Venues</span>
+        </div>
+      </div>
+
+      <!-- Right Visual Showcase -->
+      <div class="hero-visual-card">
+        <div class="hero-img-frame">
+          <img src="assets/hero_pos.jpg" alt="ElitePOS Dual Screen Touchscreen Terminal on Cafe Counter">
+        </div>
+
+        <!-- Floating Glass Badge 1: Same Day Settlement -->
+        <div class="float-badge-1">
+          <div class="float-icon-box">
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+          </div>
+          <div>
+            <div style="font-size: 11.5px; font-weight: 700; text-transform: uppercase; color: var(--blue-electric); letter-spacing: 0.05em;">Same-Day Payout</div>
+            <div style="font-size: 18px; font-weight: 800; color: var(--navy-brand); font-family: 'Outfit';">$3,842.50 Settled</div>
+            <div style="font-size: 11.5px; color: #10B981; font-weight: 600;">✓ In Bank Account Today</div>
+          </div>
+        </div>
+
+        <!-- Floating Glass Badge 2: Transaction Speed -->
+        <div class="float-badge-2">
+          <div class="float-icon-box" style="background: rgba(0, 194, 255, 0.2); border: 1px solid var(--cyan-bright);">
+            <svg width="22" height="22" fill="none" stroke="var(--cyan-bright)" stroke-width="2.2" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+          </div>
+          <div>
+            <div style="font-size: 11.5px; color: var(--cyan-bright); font-weight: 700; text-transform: uppercase;">EFTPOS Speed</div>
+            <div style="font-size: 17px; font-weight: 800; color: #FFFFFF; font-family: 'Outfit';">1.1s Contactless Tap</div>
+            <div style="font-size: 11.5px; color: #CBD5E1;">Zero counter bottlenecks</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─── METRICS & STATS BAR ─── -->
+  <section class="metrics-strip">
+    <div class="container">
+      <div class="metrics-grid">
+        <div class="metric-item">
+          <div class="metric-number">3,200+</div>
+          <div class="metric-label">Australian Venues Trading</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-number text-gradient">$0 / mo</div>
+          <div class="metric-label">Software Subscription Fee</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-number">6:00 PM</div>
+          <div class="metric-label">Same-Day Daily Bank Settlement</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-number">99.99%</div>
+          <div class="metric-label">Cloud Uptime & Offline Mode</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── INTERACTIVE VENUES TABBED EXPERIENCE ─── -->
+  <section class="section-wrap" id="venues">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Made For Your Style of Service</span>
+        <h2 class="section-title">Every venue runs differently. Your POS should too.</h2>
+        <p class="section-desc">From fast-paced morning coffee rush to multi-course dinner service, ElitePOS is customized to your exact operational workflow.</p>
+      </div>
+
+      <!-- Tab Buttons -->
+      <div class="venue-tabs-nav" role="tablist">
+        <button class="venue-tab-button active" id="tab-btn-cafe" onclick="switchVenue('cafe')" role="tab">☕ Cafes & Coffee Bars</button>
+        <button class="venue-tab-button" id="tab-btn-takeaway" onclick="switchVenue('takeaway')" role="tab">🥡 Takeaway & Fast Casual</button>
+        <button class="venue-tab-button" id="tab-btn-truck" onclick="switchVenue('truck')" role="tab">🚚 Food Trucks & Popups</button>
+        <button class="venue-tab-button" id="tab-btn-restaurant" onclick="switchVenue('restaurant')" role="tab">🍽️ Restaurants & Bistros</button>
+        <button class="venue-tab-button" id="tab-btn-pub" onclick="switchVenue('pub')" role="tab">🍺 Pubs, Bars & Clubs</button>
+      </div>
+
+      <!-- Tab Card Content (Dynamic via JS) -->
+      <div class="venue-tab-content-card" id="venue-card">
+        <div class="tab-info-col">
+          <span class="badge-pill badge-cyan" id="tab-badge" style="align-self: flex-start;">Cafes & Bakeries</span>
+          <h3 class="tab-headline" id="tab-headline">Keep the morning coffee queue moving at lightning speed.</h3>
+          <p class="tab-body-text" id="tab-body">
+            One-touch modifiers for milks, syrups, and sizes. Seamless EFTPOS integration means cashiers never double-key amounts, shaving 15 seconds off every single coffee docket.
+          </p>
+          <div class="tab-points-grid" id="tab-points">
+            <!-- Injected via JavaScript -->
+          </div>
+          <div style="padding-top: 10px;">
+            <a href="#quote" class="btn btn-primary" id="tab-cta">Get a Cafe Quote</a>
+          </div>
+        </div>
+
+        <div class="tab-img-col">
+          <img src="assets/hero_pos.jpg" id="tab-img" alt="Venue Solution Preview">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── THE COMPLETE PLATFORM ECOSYSTEM ─── -->
+  <section class="section-wrap platform-section" id="platform">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">All-In-One Hospitality Stack</span>
+        <h2 class="section-title">Everything from order to payment, completely connected.</h2>
+        <p class="section-desc">Stop juggling 3 different software subscriptions and disconnected EFTPOS terminals. ElitePOS brings your entire front and back of house together.</p>
+      </div>
+
+      <div class="features-grid">
+        <!-- Feature 1: POS -->
+        <div class="feature-card">
+          <div class="feature-icon-wrapper">
+            <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+          </div>
+          <h3 class="feature-title">Touchscreen Counter POS</h3>
+          <p class="feature-text">High-speed dual-screen terminals with customer-facing display. Real-time menu management, visual modifiers, and staff clock-in tracking.</p>
+        </div>
+
+        <!-- Feature 2: Integrated EFTPOS -->
+        <div class="feature-card">
+          <div class="feature-icon-wrapper">
+            <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"></rect><line x1="8" y1="6" x2="16" y2="6"></line><line x1="16" y1="14" x2="16" y2="14.01"></line><path d="M12 18h.01"></path></svg>
+          </div>
+          <h3 class="feature-title">Integrated Smart EFTPOS</h3>
+          <p class="feature-text">Amounts pass automatically from POS to terminal. Zero keying errors. Supports Apple Pay, Google Pay, Tap & Go, and automatic surcharge scheduling.</p>
+        </div>
+
+        <!-- Feature 3: Pay at Table -->
+        <div class="feature-card">
+          <div class="feature-icon-wrapper">
+            <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path><path d="M6 6h10M6 10h10"></path></svg>
+          </div>
+          <h3 class="feature-title">Tableside Wireless Terminals</h3>
+          <p class="feature-text">Take orders and process payments tableside. Split bills equally or by specific items in seconds, print or email digital receipts on the spot.</p>
+        </div>
+
+        <!-- Feature 4: Self-Order Kiosks -->
+        <div class="feature-card">
+          <div class="feature-icon-wrapper">
+            <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+          </div>
+          <h3 class="feature-title">Self-Service Ordering Kiosks</h3>
+          <p class="feature-text">Bust lines during peak rushes. Increase average order value by up to 24% with automated upsells and mouth-watering visual menus.</p>
+        </div>
+
+        <!-- Feature 5: KDS Kitchen Display -->
+        <div class="feature-card">
+          <div class="feature-icon-wrapper">
+            <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="15" rx="2"></rect><path d="M10 10l2 2 4-4"></path></svg>
+          </div>
+          <h3 class="feature-title">Kitchen Display System (KDS)</h3>
+          <p class="feature-text">Replace lost paper dockets with clean digital kitchen screens. Color-coded ticket timers, course firing, and instant station routing.</p>
+        </div>
+
+        <!-- Feature 6: Loyalty & CRM -->
+        <div class="feature-card">
+          <div class="feature-icon-wrapper">
+            <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+          </div>
+          <h3 class="feature-title">Built-In Customer Loyalty</h3>
+          <p class="feature-text">Reward regulars without clumsy plastic stamp cards. Points track automatically by payment card or mobile phone number, boosting repeat visits.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── INTERACTIVE SAVINGS CALCULATOR ─── -->
+  <section class="section-wrap calculator-section" id="calculator">
+    <div class="container">
+      <div class="section-header" style="color: #FFFFFF;">
+        <span class="section-tag" style="color: var(--cyan-bright);">Transparent Pricing</span>
+        <h2 class="section-title" style="color: #FFFFFF;">Calculate your annual savings with ElitePOS</h2>
+        <p class="section-desc" style="color: #CBD5E1;">Most providers charge $80 - $160 per month in POS software fees alone, on top of inflated EFTPOS terminal rentals. See what your venue keeps with $0 monthly software fees.</p>
+      </div>
+
+      <div class="calc-card-container">
+        <!-- Controls -->
+        <div class="calc-controls">
+          <div class="calc-slider-group">
+            <div class="slider-header">
+              <span class="slider-label">Monthly Card Turnover:</span>
+              <span class="slider-display-val" id="turnover-display">$45,000 / mo</span>
+            </div>
+            <input type="range" id="turnover-slider" min="10000" max="200000" step="5000" value="45000" oninput="calculateSavings()">
+            <div style="display: flex; justify-content: space-between; font-size: 12px; color: #94A3B8;">
+              <span>$10k</span>
+              <span>$50k</span>
+              <span>$100k</span>
+              <span>$150k</span>
+              <span>$200k+</span>
+            </div>
+          </div>
+
+          <div class="calc-slider-group">
+            <div class="slider-header">
+              <span class="slider-label">Current POS Terminals:</span>
+              <span class="slider-display-val" id="terminals-display">2 Terminals</span>
+            </div>
+            <input type="range" id="terminals-slider" min="1" max="8" step="1" value="2" oninput="calculateSavings()">
+          </div>
+
+          <div style="font-size: 13.5px; color: #CBD5E1; line-height: 1.6; background: rgba(0, 0, 0, 0.2); padding: 14px 18px; border-radius: var(--radius-md);">
+            💡 <em>Calculation includes eliminating $110/mo software fee per terminal + saving approx. 0.35% on competitive blended transaction rates.</em>
+          </div>
+        </div>
+
+        <!-- Result Card -->
+        <div class="calc-result-box">
+          <span class="badge-pill badge-cyan">Estimated Annual Savings</span>
+          <div class="savings-amount" id="savings-val">$4,530</div>
+          <div class="savings-subtext">Put back straight into your bank account every year to invest in staff or ingredients.</div>
+          
+          <div class="calc-breakdown">
+            <span>Monthly POS Software Fee:</span>
+            <span style="color: var(--cyan-bright); font-weight: 700;">$0 / month</span>
+          </div>
+          <div class="calc-breakdown">
+            <span>Payout Frequency:</span>
+            <span style="color: #10B981; font-weight: 700;">Same Day (6 PM)</span>
+          </div>
+
+          <a href="#quote" class="btn btn-primary" style="width: 100%; margin-top: 10px;">Lock In These Savings</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── COMPARISON MATRIX ─── -->
+  <section class="section-wrap" id="compare">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Clear Head-to-Head</span>
+        <h2 class="section-title">Why Australian venues switch to ElitePOS</h2>
+        <p class="section-desc">Traditional banks pass you back and forth between EFTPOS and POS vendors. ElitePOS handles both under one roof with local 7-day service.</p>
+      </div>
+
+      <div class="compare-table-wrap">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th style="width: 28%;">Feature</th>
+              <th class="col-highlight" style="width: 24%; font-size: 18px;">ElitePOS</th>
+              <th style="width: 24%;">Major Banks (CBA/NAB/ANZ)</th>
+              <th style="width: 24%;">Legacy Hospitality POS</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Monthly Software Fee</strong></td>
+              <td class="col-highlight"><span class="badge-check">✓ $0 Monthly Fee</span></td>
+              <td>$40 - $70 / terminal rental</td>
+              <td>$110 - $180 / mo subscription</td>
+            </tr>
+            <tr>
+              <td><strong>Bank Settlement Timing</strong></td>
+              <td class="col-highlight"><span class="badge-check">✓ Same Day (by 6 PM)</span></td>
+              <td>Next Day (T+1)</td>
+              <td>1 to 3 Business Days</td>
+            </tr>
+            <tr>
+              <td><strong>Integrated EFTPOS</strong></td>
+              <td class="col-highlight"><span class="badge-check">✓ Native 1-Second Tap</span></td>
+              <td>Separate terminal, manual link</td>
+              <td>Requires 3rd party integration</td>
+            </tr>
+            <tr>
+              <td><strong>Menu Setup & Onboarding</strong></td>
+              <td class="col-highlight"><span class="badge-check">✓ Done for you free</span></td>
+              <td><span class="badge-cross">✕ Self-setup only</span></td>
+              <td>$500+ onboarding charge</td>
+            </tr>
+            <tr>
+              <td><strong>Customer Support</strong></td>
+              <td class="col-highlight"><span class="badge-check">✓ 7 Days Local Hospitality</span></td>
+              <td>Standard bank call center</td>
+              <td>Email ticketing & bots</td>
+            </tr>
+            <tr>
+              <td><strong>Lock-in Contracts</strong></td>
+              <td class="col-highlight"><span class="badge-check">✓ Zero Lock-in</span></td>
+              <td>12 - 36 Month contracts</td>
+              <td>Annual auto-renewing</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── 3 STEP HOW IT WORKS ─── -->
+  <section class="section-wrap" style="background: #FFFFFF; border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle);" id="how">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Zero Downtime Switch</span>
+        <h2 class="section-title">Up and running in three simple steps.</h2>
+        <p class="section-desc">We know service never stops. Our team ensures your transition is smooth without losing a single order.</p>
+      </div>
+
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-num">01</div>
+          <h3 class="step-title">Send Us Your Menu</h3>
+          <p class="step-desc">Share your existing menu, modifier options, and floor plan. Our hospitality technicians pre-build and test your entire database before shipping.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">02</div>
+          <h3 class="step-title">Plug & Play Delivery</h3>
+          <p class="step-desc">Your hardware arrives fully configured. Unbox, connect to Wi-Fi or 4G SIM, and complete a quick 1-on-1 remote or on-site staff walkthrough.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">03</div>
+          <h3 class="step-title">Go Live with Confidence</h3>
+          <p class="step-desc">Trade your first service with dedicated support on standby. From morning coffee to last drinks, we’ve got your venue covered.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CUSTOMER TESTIMONIALS ─── -->
+  <section class="section-wrap">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Real Hospitality Stories</span>
+        <h2 class="section-title">Trusted by venue owners across Australia</h2>
+        <p class="section-desc">Here’s what venue managers have to say about switching to ElitePOS.</p>
+      </div>
+
+      <div class="testimonials-grid">
+        <div class="testimonial-card">
+          <p class="testimonial-quote">
+            “Switching to ElitePOS saved our cafe over $380 every single month in software subscriptions. Plus, getting our takings in our bank account by 6 PM on the same day completely transformed our cash flow for paying suppliers.”
+          </p>
+          <div class="venue-author-box">
+            <div class="venue-avatar">TG</div>
+            <div class="venue-info">
+              <h4>The Grounds on George</h4>
+              <p>Sydney CBD, NSW · 450 coffees/day</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <p class="testimonial-quote">
+            “Pay-at-table on Friday and Saturday nights is game-changing. Our waitstaff split bills right at the guest’s table in under 30 seconds. Table turnover went up by 18%, and tips increased noticeably.”
+          </p>
+          <div class="venue-author-box">
+            <div class="venue-avatar" style="background: linear-gradient(135deg, #00A3FF, #00C2FF);">LB</div>
+            <div class="venue-info">
+              <h4>Lumière Bistro & Bar</h4>
+              <p>Fitzroy, VIC · 90 Seats</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <p class="testimonial-quote">
+            “Our food truck operates across weekend festivals where internet reception can be spotty. ElitePOS’s offline payment mode worked flawlessly without skipping a beat. Outstanding local Australian support.”
+          </p>
+          <div class="venue-author-box">
+            <div class="venue-avatar" style="background: linear-gradient(135deg, #1557E5, #161144);">CB</div>
+            <div class="venue-info">
+              <h4>Coastal Smokehouse</h4>
+              <p>Burleigh Heads, QLD · Food Truck & Catering</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FAQ ACCORDION ─── -->
+  <section class="section-wrap" style="background: #FFFFFF; border-top: 1px solid var(--border-subtle);" id="faq">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Got Questions?</span>
+        <h2 class="section-title">Frequently Asked Questions</h2>
+        <p class="section-desc">Everything you need to know about fees, settlements, and switching.</p>
+      </div>
+
+      <div class="faq-container">
+        <!-- FAQ 1 -->
+        <div class="faq-item open">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <span>Are there really $0 monthly POS software fees? How do you make money?</span>
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </div>
+          <div class="faq-answer">
+            Yes, absolutely. ElitePOS operates as an integrated payment processor and POS technology provider. Instead of charging recurring monthly software subscriptions, we make a small, highly competitive margin on the card payment processing. If you don't trade, you don't pay.
+          </div>
+        </div>
+
+        <!-- FAQ 2 -->
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <span>When do my card takings land in my bank account?</span>
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </div>
+          <div class="faq-answer">
+            Same day. All transactions processed up to 5:00 PM are settled to any Australian bank account by 6:00 PM that same evening, 7 days a week including weekends and public holidays.
+          </div>
+        </div>
+
+        <!-- FAQ 3 -->
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <span>What happens if our venue loses internet connection during service?</span>
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </div>
+          <div class="faq-answer">
+            ElitePOS terminals feature an automated Offline Mode as well as dual-connectivity (Wi-Fi + built-in 4G cellular backup). If Wi-Fi drops, terminals failover automatically, continuing to fire kitchen dockets and take card payments without interruption.
+          </div>
+        </div>
+
+        <!-- FAQ 4 -->
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <span>Can I keep my existing menu, inventory items and modifiers?</span>
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </div>
+          <div class="faq-answer">
+            Yes. Simply send us an export of your current menu from Lightspeed, Square, Kounta, or a PDF menu docket. Our hospitality onboarding team builds and organizes your menu categories and modifier shortcuts for you at zero extra charge.
+          </div>
+        </div>
+
+        <!-- FAQ 5 -->
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <span>Am I locked into a multi-year contract?</span>
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </div>
+          <div class="faq-answer">
+            No lock-in contracts. We believe in earning your business every single day through superior reliability, responsive Australian support, and fair transaction rates.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── INTERACTIVE QUOTE & DEMO FORM ─── -->
+  <section class="section-wrap quote-section" id="quote">
+    <div class="container quote-box-grid">
+      <!-- Left Pitch -->
+      <div>
+        <span class="badge-pill badge-cyan" style="margin-bottom: 16px;">Quick 60-Second Request</span>
+        <h2 style="font-size: clamp(34px, 4vw, 48px); font-weight: 800; color: var(--navy-brand); line-height: 1.15; margin-bottom: 18px;">
+          Get your tailored hospitality quote today.
+        </h2>
+        <p style="font-size: 18px; color: var(--text-body); line-height: 1.6; margin-bottom: 24px;">
+          Tell us about your venue and hardware needs. One of our Australian hospitality specialists will prepare your custom rates and schedule a quick demo within 15 minutes during trading hours.
+        </p>
+
+        <div style="display: flex; flex-direction: column; gap: 14px;">
+          <div style="display: flex; align-items: center; gap: 12px; font-weight: 600; color: var(--text-heading);">
+            <div style="width: 28px; height: 28px; border-radius: 50%; background: rgba(0, 194, 255, 0.15); color: var(--blue-electric); display: flex; align-items: center; justify-content: center; font-size: 14px;">✓</div>
+            <span>No obligation & zero upfront fees</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px; font-weight: 600; color: var(--text-heading);">
+            <div style="width: 28px; height: 28px; border-radius: 50%; background: rgba(0, 194, 255, 0.15); color: var(--blue-electric); display: flex; align-items: center; justify-content: center; font-size: 14px;">✓</div>
+            <span>Complete menu configuration included</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px; font-weight: 600; color: var(--text-heading);">
+            <div style="width: 28px; height: 28px; border-radius: 50%; background: rgba(0, 194, 255, 0.15); color: var(--blue-electric); display: flex; align-items: center; justify-content: center; font-size: 14px;">✓</div>
+            <span>Same-day Australian dispatch</span>
+          </div>
+        </div>
+
+        <div style="margin-top: 36px; padding: 20px; border-radius: var(--radius-md); background: #FFFFFF; border: 1px solid var(--border-subtle); display: flex; align-items: center; gap: 16px;">
+          <div style="width: 44px; height: 44px; border-radius: 50%; background: var(--gradient-brand); display: flex; align-items: center; justify-content: center; color: #FFFFFF; font-size: 20px;">
+            📞
+          </div>
+          <div>
+            <div style="font-size: 12.5px; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">Prefer to speak directly?</div>
+            <a href="tel:1300354837" style="font-size: 18px; font-weight: 800; color: var(--navy-brand); text-decoration: none;">1300 ELITEPOS (1300 354 837)</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Form Card -->
+      <div class="form-card">
+        <h3 style="font-size: 24px; font-weight: 800; color: #FFFFFF; margin-bottom: 6px;">Request Your Venue Quote</h3>
+        <p style="font-size: 14px; color: #CBD5E1;">Fill out the details below to view tailored terminal pricing.</p>
+
+        <form id="quote-form" onsubmit="handleFormSubmit(event)">
+          <div class="form-grid">
+            <div>
+              <label class="form-label" for="inp-name">Your Full Name *</label>
+              <input type="text" id="inp-name" class="form-input" placeholder="e.g. Liam Walker" required>
+            </div>
+            <div>
+              <label class="form-label" for="inp-venue">Venue Name *</label>
+              <input type="text" id="inp-venue" class="form-input" placeholder="e.g. Coastal Cafe" required>
+            </div>
+            <div>
+              <label class="form-label" for="inp-phone">Mobile Phone *</label>
+              <input type="tel" id="inp-phone" class="form-input" placeholder="0400 000 000" required>
+            </div>
+            <div>
+              <label class="form-label" for="inp-postcode">Venue Postcode *</label>
+              <input type="text" id="inp-postcode" class="form-input" placeholder="e.g. 2000" required>
+            </div>
+            <div class="form-group-full">
+              <label class="form-label" for="inp-email">Business Email *</label>
+              <input type="email" id="inp-email" class="form-input" placeholder="manager@venue.com.au" required>
+            </div>
+            <div>
+              <label class="form-label" for="inp-type">Venue Type</label>
+              <select id="inp-type" class="form-select">
+                <option value="cafe">Cafe / Bakery</option>
+                <option value="takeaway">Takeaway / Fast Casual</option>
+                <option value="foodtruck">Food Truck / Market</option>
+                <option value="restaurant">Restaurant / Dining</option>
+                <option value="pub">Pub / Bar / Club</option>
+                <option value="other">Other Venue</option>
+              </select>
+            </div>
+            <div>
+              <label class="form-label" for="inp-terminals">Terminals Needed</label>
+              <select id="inp-terminals" class="form-select">
+                <option value="1">1 Terminal (Counter / EFTPOS)</option>
+                <option value="2" selected>2 Terminals</option>
+                <option value="3-4">3 - 4 Terminals (Tableside + KDS)</option>
+                <option value="5+">5+ Terminals (Multi-station)</option>
+              </select>
+            </div>
+            <div class="form-group-full">
+              <label class="form-label" for="inp-notes">Current Situation</label>
+              <select id="inp-notes" class="form-select">
+                <option>Switching from another provider (reduce fees)</option>
+                <option>Opening a brand new venue</option>
+                <option>Replacing outdated EFTPOS only</option>
+                <option>Adding Pay-at-Table or Kiosks</option>
+              </select>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 24px; padding: 15px; font-size: 16px;">
+            Get My Free Quote Now →
+          </button>
+          <div style="font-size: 12px; color: #94A3B8; text-align: center; margin-top: 10px;">
+            🔒 Your information is confidential. We will never spam or sell your details.
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FINAL HIGH-IMPACT CTA ─── -->
+  <section class="final-cta">
+    <div class="container final-cta-content">
+      <div style="max-width: 680px;">
+        <span class="badge-pill badge-cyan" style="margin-bottom: 14px;">Ready to Elevate Your Service?</span>
+        <h2 style="font-size: clamp(34px, 4.4vw, 52px); font-weight: 800; color: #FFFFFF; line-height: 1.1; margin-bottom: 14px;">
+          $0 Monthly Fees. Paid the Same Day.
+        </h2>
+        <p style="font-size: 18px; color: #CBD5E1;">
+          Join over 3,200 Australian hospitality venues transforming their counter and tableside experience.
+        </p>
+      </div>
+
+      <div style="display: flex; gap: 14px; flex-wrap: wrap;">
+        <a href="#quote" class="btn btn-primary" style="font-size: 16px; padding: 16px 36px;">Get Started Free</a>
+        <a href="tel:1300354837" class="btn btn-white" style="font-size: 16px; padding: 16px 28px;">Call 1300 354 837</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ─── -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <a href="#hero" style="display: inline-block; margin-bottom: 16px;">
+            <img src="assets/logo.png" alt="ElitePOS Logo" style="height: 38px; filter: brightness(0) invert(1);">
+          </a>
+          <p style="line-height: 1.6; margin-bottom: 16px; max-width: 300px;">
+            Australia's purpose-built hospitality point of sale and payments platform. Engineered for speed, reliability, and zero software subscription costs.
+          </p>
+          <div style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #10B981;">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: #10B981; box-shadow: 0 0 8px #10B981;"></span>
+            <span>All Australian systems operational</span>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h5>Venues</h5>
+          <ul class="footer-links">
+            <li><a href="#venues" onclick="switchVenue('cafe')">Cafes & Bakeries</a></li>
+            <li><a href="#venues" onclick="switchVenue('takeaway')">Takeaway & Quick Service</a></li>
+            <li><a href="#venues" onclick="switchVenue('truck')">Food Trucks & Popups</a></li>
+            <li><a href="#venues" onclick="switchVenue('restaurant')">Restaurants & Bistros</a></li>
+            <li><a href="#venues" onclick="switchVenue('pub')">Pubs, Bars & Taverns</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Platform</h5>
+          <ul class="footer-links">
+            <li><a href="#platform">Countertop POS</a></li>
+            <li><a href="#platform">Integrated EFTPOS</a></li>
+            <li><a href="#platform">Tableside Ordering</a></li>
+            <li><a href="#platform">Self-Service Kiosks</a></li>
+            <li><a href="#platform">Kitchen Display (KDS)</a></li>
+            <li><a href="#platform">Customer Loyalty</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Contact & Support</h5>
+          <ul class="footer-links">
+            <li><strong style="color: #FFFFFF;">Sales & Support:</strong> 1300 354 837</li>
+            <li><strong style="color: #FFFFFF;">Hours:</strong> 7 Days, 7:00 AM - 11:00 PM AEST</li>
+            <li><strong style="color: #FFFFFF;">Email:</strong> hello@elitepos.com.au</li>
+            <li><strong style="color: #FFFFFF;">Headquarters:</strong> Level 12, 100 Mount St, North Sydney NSW 2060</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>
+          © 2026 ElitePOS Pty Ltd · ABN 48 629 184 920. All rights reserved.
+        </div>
+        <div style="display: flex; gap: 20px;">
+          <a href="#faq">Pricing</a>
+          <a href="#faq">Privacy Policy</a>
+          <a href="#faq">Terms of Service</a>
+          <a href="tel:1300354837">1300 354 837</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ─── LIVE TRADING ACTIVITY TOAST (SOCIAL PROOF) ─── -->
+  <div class="live-toast" id="live-toast">
+    <div class="toast-dot"></div>
+    <div>
+      <div style="font-size: 13.5px; font-weight: 700; color: var(--navy-brand);" id="toast-title">Fresh Grind Cafe, Sydney</div>
+      <div style="font-size: 12px; color: var(--text-muted);" id="toast-desc">Just completed a $28.50 order via ElitePOS</div>
+    </div>
+  </div>
+
+  <!-- ─── SUCCESS MODAL ─── -->
+  <div class="modal-overlay" id="success-modal">
+    <div class="modal-card">
+      <div style="width: 64px; height: 64px; border-radius: 50%; background: rgba(0, 194, 255, 0.15); color: var(--blue-electric); display: flex; align-items: center; justify-content: center; font-size: 32px; margin: 0 auto 20px;">
+        ✓
+      </div>
+      <h3 style="font-size: 26px; font-weight: 800; color: var(--navy-brand); margin-bottom: 10px;">Quote Request Received!</h3>
+      <p style="font-size: 15.5px; color: var(--text-body); line-height: 1.6; margin-bottom: 24px;" id="modal-msg">
+        Thank you! Our Australian hospitality team is preparing your custom quote. We’ll call you shortly within 15 minutes.
+      </p>
+      <button class="btn btn-primary" style="width: 100%;" onclick="closeModal()">Close</button>
+    </div>
+  </div>
+
+  <!-- ─── JAVASCRIPT LOGIC ─── -->
+  <script>
+    // ─── VENUE DATA ───
+    const venuesData = {
+      cafe: {
+        badge: 'Cafes & Bakeries',
+        headline: 'Keep the morning coffee queue moving at lightning speed.',
+        body: 'One-touch modifiers for milks, syrups, and sizes. Seamless EFTPOS integration means cashiers never double-key amounts, shaving 15 seconds off every single coffee docket.',
+        points: [
+          'Fast counter ordering with 1-second contactless EFTPOS tap',
+          'Automatic loyalty points on tap without clumsy punch cards',
+          'Self-service kiosk options to bust lines during peak hours',
+          'Daily sales and payment totals automatically reconciled'
+        ],
+        cta: 'Get a Cafe Quote',
+        img: 'assets/hero_pos.jpg'
+      },
+      takeaway: {
+        badge: 'Takeaway & Fast Casual',
+        headline: 'More orders through the kitchen, zero mistakes.',
+        body: 'Allow customers to order and pay themselves at interactive kiosks during busy lunch rushes while your kitchen crew stays laser-focused on packing fresh orders.',
+        points: [
+          'Self-service ordering kiosks that lift average basket size by 24%',
+          'Kitchen Display Screen (KDS) docket routing by prep station',
+          'Instant menu updates across counter and online ordering in one click',
+          'Integrated card payments at both counter and kiosk terminals'
+        ],
+        cta: 'Get a Takeaway Quote',
+        img: 'assets/venue_kiosk.jpg'
+      },
+      truck: {
+        badge: 'Food Trucks & Markets',
+        headline: 'Your entire POS & payment terminal, wherever you park.',
+        body: 'Lightweight, ultra-compact hardware with built-in 4G cellular SIM and offline mode designed specifically for festival stalls, food trucks, and pop-up events.',
+        points: [
+          '100% portable all-day battery powered EFTPOS terminals',
+          'Automatic Offline Mode so transactions never decline with poor Wi-Fi',
+          'Multi-location reporting so you see revenue by festival or spot',
+          'Same-day bank settlement so weekend revenue hits your account fast'
+        ],
+        cta: 'Get a Food Truck Quote',
+        img: 'assets/hero_pos.jpg'
+      },
+      restaurant: {
+        badge: 'Restaurants & Bistros',
+        headline: 'Turn tables faster, not heads. Tableside bill splitting made easy.',
+        body: 'Equip servers with handheld smart terminals to take orders tableside and settle bills in seconds. Split bills evenly or by individual item without running back to the counter.',
+        points: [
+          'Pay-at-table handhelds with integrated tipping and split billing',
+          'Visual interactive floor plan with live table status & course firing',
+          'Digital receipts printed directly or sent via SMS/email instantly',
+          'Front of house and back of house operating from one synced ticket queue'
+        ],
+        cta: 'Get a Restaurant Quote',
+        img: 'assets/venue_restaurant.jpg'
+      },
+      pub: {
+        badge: 'Pubs, Bars & Taverns',
+        headline: 'Engineered for a packed Friday night rush.',
+        body: 'High-speed bar tabs, lightning contactless tap-and-go, multiple speed rails, and bistro pay-at-table all connected to one central hospitality platform.',
+        points: [
+          'Fast bar-side card pre-authorizations and instant tab closures',
+          'Tableside mobile ordering for beer gardens and bistro areas',
+          'Scheduled happy hour price automation and multi-bar inventory',
+          'One single point of contact for all POS terminals and EFTPOS units'
+        ],
+        cta: 'Get a Pub Quote',
+        img: 'assets/venue_restaurant.jpg'
+      }
+    };
+
+    function switchVenue(venueKey) {
+      const data = venuesData[venueKey];
+      if (!data) return;
+
+      // Update Tab buttons
+      document.querySelectorAll('.venue-tab-button').forEach(btn => btn.classList.remove('active'));
+      const activeBtn = document.getElementById(`tab-btn-${venueKey}`);
+      if (activeBtn) activeBtn.classList.add('active');
+
+      // Update hero chips if clicked there
+      document.querySelectorAll('.venue-tag-btn').forEach(btn => {
+        if (btn.textContent.toLowerCase().includes(venueKey) || (venueKey === 'cafe' && btn.textContent.includes('Cafes'))) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+
+      // Update Tab Content Card
+      const card = document.getElementById('venue-card');
+      card.style.opacity = '0.4';
+      card.style.transform = 'translateY(6px)';
+
+      setTimeout(() => {
+        document.getElementById('tab-badge').textContent = data.badge;
+        document.getElementById('tab-headline').textContent = data.headline;
+        document.getElementById('tab-body').textContent = data.body;
+        document.getElementById('tab-cta').textContent = data.cta;
+        document.getElementById('tab-img').src = data.img;
+
+        const pointsContainer = document.getElementById('tab-points');
+        pointsContainer.innerHTML = data.points.map(pt => `
+          <div class="tab-point-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"></path></svg>
+            <span>${pt}</span>
+          </div>
+        `).join('');
+
+        card.style.transition = 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
+        card.style.opacity = '1';
+        card.style.transform = 'translateY(0)';
+      }, 150);
+    }
+
+    // Initialize with Cafe on load
+    switchVenue('cafe');
+
+    // ─── SAVINGS CALCULATOR LOGIC ───
+    function calculateSavings() {
+      const turnover = parseInt(document.getElementById('turnover-slider').value, 10);
+      const terminals = parseInt(document.getElementById('terminals-slider').value, 10);
+
+      document.getElementById('turnover-display').textContent = '$' + turnover.toLocaleString() + ' / mo';
+      document.getElementById('terminals-display').textContent = terminals + (terminals === 1 ? ' Terminal' : ' Terminals');
+
+      // Typical competitor model:
+      // Software subscription: $110 / month / terminal
+      // Payment rate difference: ~0.35% higher with traditional bank + terminal rental fees ($35/mo)
+      const monthlySoftwareSaved = terminals * 110;
+      const monthlyTerminalRentalSaved = terminals * 35;
+      const monthlyRateSaved = turnover * 0.0035;
+
+      const totalMonthlySaved = monthlySoftwareSaved + monthlyTerminalRentalSaved + monthlyRateSaved;
+      const annualSavings = Math.round(totalMonthlySaved * 12);
+
+      document.getElementById('savings-val').textContent = '$' + annualSavings.toLocaleString();
+    }
+
+    // ─── FAQ ACCORDION LOGIC ───
+    function toggleFaq(el) {
+      const parent = el.parentElement;
+      const isOpen = parent.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(item => item.classList.remove('open'));
+      if (!isOpen) {
+        parent.classList.add('open');
+      }
+    }
+
+    // ─── FORM SUBMISSION SIMULATION ───
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById('inp-name').value;
+      const venue = document.getElementById('inp-venue').value;
+      const terminals = document.getElementById('inp-terminals').value;
+
+      document.getElementById('modal-msg').innerHTML = `
+        Thank you <strong>${name}</strong>! We’ve configured a customized proposal for <strong>${venue}</strong> (${terminals} terminal setup) with <strong>$0 monthly fees</strong>.<br><br>
+        A confirmation has been sent to your email, and our team will call your mobile within 15 minutes.
+      `;
+
+      document.getElementById('success-modal').classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('success-modal').classList.remove('active');
+      document.getElementById('quote-form').reset();
+    }
+
+    // ─── LIVE NOTIFICATION TOAST SIMULATION ───
+    const venuesList = [
+      { name: "Fresh Grind Espresso, Sydney", amount: "$38.50" },
+      { name: "Bar Centrale, Melbourne", amount: "$142.00" },
+      { name: "Sunny Bakery, Brisbane", amount: "$24.80" },
+      { name: "Harbour View Bistro, Manly", amount: "$210.50" },
+      { name: "Tacos Del Mar Truck, Gold Coast", amount: "$54.00" }
+    ];
+    let toastIndex = 0;
+
+    function showLiveToast() {
+      const toast = document.getElementById('live-toast');
+      const item = venuesList[toastIndex];
+      document.getElementById('toast-title').textContent = item.name;
+      document.getElementById('toast-desc').textContent = `Just processed ${item.amount} via ElitePOS`;
+
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 4500);
+
+      toastIndex = (toastIndex + 1) % venuesList.length;
+    }
+
+    // Trigger toast after 3 seconds, then every 16 seconds
+    setTimeout(showLiveToast, 3000);
+    setInterval(showLiveToast, 16000);
+
+    // ─── MOBILE NAV TOGGLE ───
+    function toggleMobileNav() {
+      const navLinks = document.querySelector('.nav-links');
+      if (navLinks.style.display === 'flex') {
+        navLinks.style.display = 'none';
+      } else {
+        navLinks.style.display = 'flex';
+        navLinks.style.flexDirection = 'column';
+        navLinks.style.position = 'absolute';
+        navLinks.style.top = '76px';
+        navLinks.style.left = '0';
+        navLinks.style.right = '0';
+        navLinks.style.background = '#FFFFFF';
+        navLinks.style.padding = '24px';
+        navLinks.style.boxShadow = '0 12px 24px rgba(0,0,0,0.1)';
+        navLinks.style.borderBottom = '1px solid #E2E8F0';
+      }
+    }
+  </script>
+</body>
+</html>
